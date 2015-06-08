@@ -1,0 +1,11 @@
+./myinfo
+Sun Jun  7 22:49:50 CDT 2015
+---------------------------System name: sivagaminathan-VirtualBox
+User information:
+full name: Sivagaminathan,,,
+log name: sivagaminathan
+uid: 1000
+gid: 1000
+HOME dir: /home/sivagaminathan
+Default shell: /bin/bash
+-------------------------------
