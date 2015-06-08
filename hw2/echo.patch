@@ -1,0 +1,14 @@
+--- echo-reverse.c      2015-06-08 02:20:06.352983498 -0500
++++ echo.c      2012-05-01 15:55:08.000000000 -0500
+@@ -258,8 +258,9 @@
+     {
+       while (argc > 0)
+         {
++          fputs (argv[0], stdout);
+           argc--;
+-         fputs (argv[argc], stdout);
++          argv++;
+           if (argc > 0)
+             putchar (' ');
+         }
+
