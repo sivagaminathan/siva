@@ -1,8 +1,18 @@
+/*
+
+Sivagaminathan Sivasankaran 
+Assignment 4 CS 590 
+
+Matrix Multiplicatin with multiple threads 
+
+*/
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
 
-
+// Structure to access arrays 
 struct v
 {
 	int i;
@@ -10,12 +20,14 @@ struct v
 
 };
 
-
+// global declarations 
 int a[100][100];
 int b[100][100];
 int c[100][100];
 int k; 
 
+
+// The actual multiplication of rows and columns happen here 
 void multiply(void *data)
 {
 	
@@ -67,18 +79,9 @@ int main()
                                 fscanf(file,"%d", &a[i][j]);
                         }
 		}
-/*
 
-PRINTS MATRIX A FOR REFERENCE 
-		for(i=0;i<k;i++)
-                {
-                        for(j=0;j<k;j++)
-                        {
-                                printf("%d\t", a[i][j]);
-                        }
-                        printf("\n");
-                }
-*/
+
+		// FILLS MATRIX B
 		printf("\n");
 
 		for(i=0;i<k;i++)
@@ -98,36 +101,20 @@ PRINTS MATRIX A FOR REFERENCE
 		struct v *data = (struct v *)malloc(sizeof(struct v));
 		data->i = i;
 		data->j = j;
+
+		// Create threads and keep count of number of threads created 
 		pthread_create(&tid[0],NULL,multiply,data);
 			numberthreads++;
 		}
 	}
 	for(j=0; j < numberthreads; j++)
     	{
+		// Use Thread join for all the threads 
             pthread_join( tid[j], NULL);
     	}
-/*	
-    //printf("A=\n");
-	 for(i=0;i<k;i++)
-                {
-                        for(j=0;j<k;j++)
-                        {
-                                printf("%d\t", a[i][j]);
-                        }
-                        printf("\n");
-                }
 
-    printf("B=\n");
 
-	for(i=0;i<k;i++)
-                {
-                        for(j=0;j<k;j++)
-                        {
-                                printf("%d\t", b[i][j]);
-                        }
-                        printf("\n");
-                }
-*/
+// Print the result matrix 
     printf("************************\n\n");
 	printf("Result Matrix\n");
 	
