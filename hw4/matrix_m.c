@@ -7,16 +7,14 @@ struct v
 {
 	int i;
 	int j;
+
 };
 
 
 int a[100][100];
 int b[100][100];
 int c[100][100];
-
-#define M 3
-#define N 3
-#define d 2 
+int k; 
 
 void multiply(void *data)
 {
@@ -25,32 +23,31 @@ void multiply(void *data)
 	int j = ((struct v*)data)->j;
 	int value=0;
 	int x=0;
-	int k;
-	for(i=0;i<M;i++)
+	//int k;
+	for(x= 0; x<k;x++)
 	{
-		for(j=0;j<N;j++)
-		{
-			value = 0;
-			for(x= 0; x<d;x++)
-			{
-				value += a[i][x] * b [x][j];
-			}
-			c[i][j] = value;
-			value = 0;
-		}
+		// Actual multiplication of single row/column happens here 
+		value += a[i][x] * b [x][j];
+	//	printf("%d   %d ", a[i][x],b[x][j]);
 	}
+	// The multiplied value is then stored in array 
+	//printf("   %d   \n",value);
+	c[i][j] = value;
+	//value = 0;
+	//printf("%d  %d  %d\n",a[i][x],b[x][j],c[i][j]);	
+	
 	pthread_exit(NULL);
 }
 
 int main()
 {
-	
+	// MAX number of Threads we can have 	
 	pthread_t tid[10000];
 
-	int i,j,k;
+	int i,j;
 
 	FILE *file;
-        file = fopen ("matrix.dat","r");
+        file = fopen ("matrix.dat","r"); //file that contains the matrix
 
 
         // IF File does not exists 
@@ -70,6 +67,9 @@ int main()
                                 fscanf(file,"%d", &a[i][j]);
                         }
 		}
+/*
+
+PRINTS MATRIX A FOR REFERENCE 
 		for(i=0;i<k;i++)
                 {
                         for(j=0;j<k;j++)
@@ -78,7 +78,9 @@ int main()
                         }
                         printf("\n");
                 }
-		printf("\n\n\n\n\n\n");
+*/
+		printf("\n");
+
 		for(i=0;i<k;i++)
                 {
                         for(j=0;j<k;j++)
@@ -87,24 +89,25 @@ int main()
                         }
                 }
 	}
-
-
-	struct v *data = (struct v *)malloc(sizeof(struct v));
-	data->i =0;
-	data->j =0;
-	
-	int numberthreads = 0;	
-
-
-	pthread_create(&tid[0],NULL,multiply,data);
-	numberthreads++;
-
+	int numberthreads = 0;
+	for(i=0;i<k;i++)
+	{
+		for(j=0;j<k;j++)
+		{
+		
+		struct v *data = (struct v *)malloc(sizeof(struct v));
+		data->i = i;
+		data->j = j;
+		pthread_create(&tid[0],NULL,multiply,data);
+			numberthreads++;
+		}
+	}
 	for(j=0; j < numberthreads; j++)
-    {
+    	{
             pthread_join( tid[j], NULL);
-    }
-
-    printf("A=\n");
+    	}
+/*	
+    //printf("A=\n");
 	 for(i=0;i<k;i++)
                 {
                         for(j=0;j<k;j++)
@@ -124,8 +127,9 @@ int main()
                         }
                         printf("\n");
                 }
-
-    printf("A*B=\n");
+*/
+    printf("************************\n\n");
+	printf("Result Matrix\n");
 	
 	for(i=0;i<k;i++)
                 {
@@ -135,7 +139,7 @@ int main()
                         }
 			printf("\n");
                 }
-
+	printf("************************\n\n");
     pthread_exit(NULL);
 
 	return 0;
